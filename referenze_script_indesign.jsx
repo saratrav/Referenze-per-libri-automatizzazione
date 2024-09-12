@@ -11,9 +11,11 @@ function main() {
         if (link && link.linkXmp) {
             var xmp = link.linkXmp;
             var author = xmp.author || "Autore non disponibile";
+            var page = item.parentPage || "Pagina non disponibile";
 
             message += "Nome Immagine: " + link.name + "\n";
             message += "Autore: " + author + "\n";
+            message += "Numero Pagina: " + page.name + "\n\n";
         }
     }
 
