@@ -38,13 +38,17 @@ function main() {
         return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
     }
 
+    // Funzione per estrarre la parte del nome prima di `_` o `-`
+    function getBaseName(name) {
+        var baseName = name.split(/[_-]/)[0];
+        return capitalizeFirstLetter(baseName);
+    }
+
     // Costruisci il messaggio ordinato
     for (var i = 0; i < metadataArray.length; i++) {
         var metadata = metadataArray[i];
-        // Estrai la parte del nome dell'immagine fino al primo "_"
-        var nameParts = metadata.name.split("_");
-        var shortName = nameParts[0] || "Nome non disponibile";
-        shortName = capitalizeFirstLetter(shortName);
+        // Estrai la parte del nome dell'immagine fino al primo `_` o `-`
+        var shortName = getBaseName(metadata.name);
         
         // Costruisci la riga nel formato desiderato
         message += metadata.author + "/" + shortName + ": " + metadata.pageNumber + ";\n";
