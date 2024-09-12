@@ -18,3 +18,4 @@ if response.status_code == 200:
         print('Nessun tag <h1> trovato.')
 else:
     print(f'Errore durante la richiesta: {response.status_code}')
+ 
