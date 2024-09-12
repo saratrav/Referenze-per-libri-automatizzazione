@@ -17,7 +17,7 @@ function main() {
             var page = item.parentPage;
             var pageNumber = page ? page.name : "Pagina non disponibile";
 
-            // Aggiungi un oggetto al array con i metadati
+            // Aggiungi un oggetto all'array con i metadati
             metadataArray.push({
                 author: author,
                 name: link.name,
@@ -33,12 +33,18 @@ function main() {
         return pageA - pageB;
     });
 
+    // Funzione per capitalizzare la prima lettera
+    function capitalizeFirstLetter(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+
     // Costruisci il messaggio ordinato
     for (var i = 0; i < metadataArray.length; i++) {
         var metadata = metadataArray[i];
-        // Estrai la prima parola del nome dell'immagine
-        var nameParts = metadata.name.split(" ");
+        // Estrai la parte del nome dell'immagine fino al primo "_"
+        var nameParts = metadata.name.split("_");
         var shortName = nameParts[0] || "Nome non disponibile";
+        shortName = capitalizeFirstLetter(shortName);
         
         // Costruisci la riga nel formato desiderato
         message += metadata.author + "/" + shortName + ": " + metadata.pageNumber + ";\n";
