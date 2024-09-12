@@ -1,31 +1,26 @@
-// Crea un file di testo e scrive i titoli delle immagini in Adobe InDesign
-
-// Definisce il percorso del file di testo da creare
-var filePath = File.saveDialog("Salva il file di testo con i titoli delle immagini", "*.txt");
-
-// Verifica se è stato selezionato un percorso di salvataggio
-if (filePath) {
-    var file = new File(filePath);
-    file.open("w"); // Apre il file per scrittura
-
-    // Ottiene il documento attivo
+function main() {
     var doc = app.activeDocument;
+    var message = "Metadati delle immagini:\n\n";
 
-    // Cicla attraverso tutti gli oggetti di tipo 'Graphic'
-    for (var i = 0; i < doc.allGraphics.length; i++) {
-        var graphic = doc.allGraphics[i];
+    var pageItems = doc.allGraphics;
 
-        // Verifica se l'oggetto grafico ha un titolo
-        if (graphic.itemLink && graphic.itemLink.name) {
-            var title = graphic.itemLink.name; // Ottiene il titolo del file immagine
+    for (var i = 0; i < pageItems.length; i++) {
+        var item = pageItems[i];
+        var link = item.itemLink;
 
-            // Scrive il titolo nel file di testo
-            file.writeln(title);
+        if (link && link.linkXmp) {
+            var xmp = link.linkXmp;
+            var author = xmp.author || "Autore non disponibile";
+            var credit = xmp.getProperty(XMPConst.NS_PHOTOSHOP, "Credit") || "Crediti non disponibili";
+
+            message += "Nome Immagine: " + item.name + "\n";
+            message += "Autore: " + author + "\n";
+            message += "Crediti: " + credit + "\n\n";
         }
     }
 
-    file.close(); // Chiude il file di testo
-    alert("Titoli delle immagini salvati con successo in " + filePath);
-} else {
-    alert("Operazione annullata.");
+    alert(message || "Nessuna immagine con metadati trovata.");
 }
+
+// Esegui la funzione principale
+main();
