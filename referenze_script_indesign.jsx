@@ -1,61 +1,31 @@
-// Imposta il percorso del file di testo di output
-var outputFilePath = File.saveDialog("Seleziona il percorso per il file di testo");
+// Crea un file di testo e scrive i titoli delle immagini in Adobe InDesign
 
-// Verifica se l'utente ha selezionato un percorso valido
-if (outputFilePath) {
-    var outputFile = new File(outputFilePath);
+// Definisce il percorso del file di testo da creare
+var filePath = File.saveDialog("Salva il file di testo con i titoli delle immagini", "*.txt");
 
-    // Apri il file di testo per la scrittura
-    outputFile.open("w");
+// Verifica se è stato selezionato un percorso di salvataggio
+if (filePath) {
+    var file = new File(filePath);
+    file.open("w"); // Apre il file per scrittura
 
-    // Accedi al documento attivo
+    // Ottiene il documento attivo
     var doc = app.activeDocument;
 
-    // Crea una variabile per memorizzare gli autori
-    var authors = [];
+    // Cicla attraverso tutti gli oggetti di tipo 'Graphic'
+    for (var i = 0; i < doc.allGraphics.length; i++) {
+        var graphic = doc.allGraphics[i];
 
-    // Funzione per controllare se un autore è già presente
-    function isAuthorInList(author) {
-        for (var i = 0; i < authors.length; i++) {
-            if (authors[i] === author) {
-                return true;
-            }
-        }
-        return false;
-    }
+        // Verifica se l'oggetto grafico ha un titolo
+        if (graphic.itemLink && graphic.itemLink.name) {
+            var title = graphic.itemLink.name; // Ottiene il titolo del file immagine
 
-    // Itera attraverso tutte le pagine del documento
-    for (var i = 0; i < doc.pages.length; i++) {
-        var page = doc.pages[i];
-        
-        // Itera attraverso tutti gli oggetti nella pagina
-        for (var j = 0; j < page.allGraphics.length; j++) {
-            var graphic = page.allGraphics[j];
-            
-            // Controlla se il graphic è un'immagine e se ha un link
-            if (graphic.itemLink) {
-                var link = graphic.itemLink;
-
-                // Prova a ottenere informazioni dal link
-                var author = link.name; // Usa il nome del file come fallback
-
-                // Se l'autore non è già nella lista, aggiungilo
-                if (author && !isAuthorInList(author)) {
-                    authors.push(author);
-                }
-            }
+            // Scrive il titolo nel file di testo
+            file.writeln(title);
         }
     }
 
-    // Scrivi gli autori nel file di testo
-    for (var k = 0; k < authors.length; k++) {
-        outputFile.writeln(authors[k]);
-    }
-
-    // Chiudi il file di testo
-    outputFile.close();
-
-    alert("L'elenco degli autori è stato salvato con successo!");
+    file.close(); // Chiude il file di testo
+    alert("Titoli delle immagini salvati con successo in " + filePath);
 } else {
     alert("Operazione annullata.");
 }
