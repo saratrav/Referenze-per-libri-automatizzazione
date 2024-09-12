@@ -19,7 +19,19 @@ function main() {
         }
     }
 
-    alert(message || "Nessuna immagine con metadati trovata.");
+    // Specifica il percorso e il nome del file
+    var filePath = File.saveDialog("Salva il file di testo", "*.txt");
+    
+    if (filePath) {
+        var file = new File(filePath);
+        file.encoding = "UTF-8";
+        file.open("w");
+        file.write(message);
+        file.close();
+        alert("File salvato con successo in: " + filePath.fsName);
+    } else {
+        alert("Salvataggio annullato.");
+    }
 }
 
 // Esegui la funzione principale
