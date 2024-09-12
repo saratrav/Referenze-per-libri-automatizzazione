@@ -19,8 +19,8 @@ function main() {
 
             // Aggiungi un oggetto al array con i metadati
             metadataArray.push({
-                name: link.name,
                 author: author,
+                name: link.name,
                 pageNumber: pageNumber
             });
         }
@@ -36,9 +36,12 @@ function main() {
     // Costruisci il messaggio ordinato
     for (var i = 0; i < metadataArray.length; i++) {
         var metadata = metadataArray[i];
-        message += "Nome Immagine: " + metadata.name + "\n";
-        message += "Autore: " + metadata.author + "\n";
-        message += "Numero Pagina: " + metadata.pageNumber + "\n\n";
+        // Estrai la prima parola del nome dell'immagine
+        var nameParts = metadata.name.split(" ");
+        var shortName = nameParts[0] || "Nome non disponibile";
+        
+        // Costruisci la riga nel formato desiderato
+        message += metadata.author + "/" + shortName + ": " + metadata.pageNumber + ";\n";
     }
 
     // Specifica il percorso e il nome del file
